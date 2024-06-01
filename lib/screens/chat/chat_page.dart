@@ -112,7 +112,63 @@ class _ScreenChatState extends State<ScreenChat> {
     });
   }
 
- 
+  Future<void> _deleteMessage(String messageId, int index) async {
+    final url = 'http://192.168.1.13:8085/messages/$messageId';
+    final response = await http.delete(Uri.parse(url));
+
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      setState(() {
+        messages.removeAt(index);
+      });
+    } else {
+      print('Failed to delete message. Status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+    }
+  }
+
+  void _confirmDeleteMessage(String messageId, int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Deletion'),
+          content: Text('Are you sure you want to delete this message?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                _deleteMessage(messageId, index);
+                Navigator.of(context).pop();
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void fetchContactUsername() {
+    final url =
+        'http://192.168.1.13:8085/api/users/username/${widget.contactId}';
+    http.get(Uri.parse(url)).then((response) {
+      if (response.statusCode == 200) {
+        setState(() {
+          contactUsername = response.body;
+        });
+      } else {
+        print('Failed to fetch contact username: ${response.statusCode}');
+      }
+    }).catchError((error) {
+      print('Error fetching contact username: $error');
+    });
+  }
+
   void _initSpeech() async {
     bool available = await _speechToText.initialize(
       onStatus: (val) => print('onStatus: $val'),
