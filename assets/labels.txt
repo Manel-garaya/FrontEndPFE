@@ -1,7 +1,6 @@
-Angry
-Disgust
-Fear
-Happy
-Neutral
-Sad
-Surprise
+ Good
+ Hello
+ Peace
+ Maybe
+ Love
+ Salut

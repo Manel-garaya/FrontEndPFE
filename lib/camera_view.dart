@@ -152,7 +152,7 @@ class _CameraAppState extends State<CameraApp> {
 
   loadModel() async {
     String? res = await Tflite.loadModel(
-        model: "assets/converted_model.tflite",
+        model: "assets/model_unquant.tflite",
         labels: "assets/labels.txt",
         numThreads: 1, // defaults to 1
         isAsset: true,
