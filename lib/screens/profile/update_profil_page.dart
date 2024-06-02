@@ -195,7 +195,7 @@ class UpdateProfilPage extends StatelessWidget {
     String currentUserId = AppStorge.readId().toString();
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://192.168.1.13:8085/cloudinary/upload/$currentUserId'),
+      Uri.parse('http://192.168.73.164:8085/cloudinary/upload/$currentUserId'),
     );
 
     List<int> bytes = await pickedFile.readAsBytes();

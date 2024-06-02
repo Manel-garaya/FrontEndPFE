@@ -76,7 +76,7 @@ class _CameraAppState extends State<CameraApp> {
     super.initState();
     _client = StompClient(
       config: StompConfig(
-        url: 'ws://192.168.1.13:8085/socket',
+        url: 'ws://192.168.73.164:8085/socket',
         onConnect: _onConnectCallback,
         onWebSocketError: (dynamic error) => print(error.toString()),
       ),
@@ -96,7 +96,7 @@ class _CameraAppState extends State<CameraApp> {
 
       // Start processing the output every 3 seconds
       timer =
-          Timer.periodic(const Duration(seconds: 3), (Timer t) => runModel());
+          Timer.periodic(const Duration(seconds: 1), (Timer t) => runModel());
     }).catchError((Object e) {
       if (e is CameraException) {
         switch (e.code) {

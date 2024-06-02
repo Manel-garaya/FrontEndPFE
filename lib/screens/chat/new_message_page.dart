@@ -27,7 +27,7 @@ class NewMessagePage extends GetView<ProfileController> {
     };
 
     final Uri uri =
-        Uri.parse('http://192.168.1.13:8085/api/users/addContacts/$currentUserId');
+        Uri.parse('http://192.168.73.164:8085/api/users/addContacts/$currentUserId');
 
     try {
       final http.Response response = await http.post(

@@ -58,6 +58,10 @@ dependencies:
   tflite_flutter: ^0.10.4
   animated_splash_screen: ^1.1.0
   page_transition: ^2.0.9
+  image: ^3.0.1
+  path_provider: ^2.0.9
+  path: ^1.8.0
+
 
 dev_dependencies:
   flutter_test:

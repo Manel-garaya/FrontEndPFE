@@ -20,7 +20,7 @@ class _ConversationlistPageState extends State<ConversationlistPage> {
 
   Future<void> fetchContacts() async {
     final response =
-        await http.get(Uri.parse('http://192.168.1.13:8085/api/contacts/get'));
+        await http.get(Uri.parse('http://192.168.73.164:8085/api/contacts/get'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       setState(() {
