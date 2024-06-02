@@ -1,7 +1,7 @@
 import 'package:messagerie/core/storage/app_storage.dart';
 
 class ApiConstants {
-  static const String baseUrl = "http://192.168.73.164:8085/";
+  static const String baseUrl = "http://192.168.1.13:8085/";
   static const String signupUrl = "${baseUrl}api/users/register";
   static const String singinUrl = "${baseUrl}api/users/login";
   static const String forgotPasswordUrl = "${baseUrl}api/users/forgot-password";
