@@ -45,7 +45,7 @@ class _ConversationlistPageState extends State<ConversationlistPage> {
   Future<void> _fetchContacts() async {
     try {
       final response = await http.get(
-          Uri.parse('http://192.168.1.13:8085/api/users/contacts/${widget.id}'));
+          Uri.parse('http://192.168.74.164:8085/api/users/contacts/${widget.id}'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         setState(() {
@@ -65,7 +65,7 @@ class _ConversationlistPageState extends State<ConversationlistPage> {
     for (Contact contact in contacts) {
       try {
         final response = await http.get(Uri.parse(
-            'http://192.168.1.13:8085/api/users/imageByEmail/${contact.email}'));
+            'http://192.168.74.164:8085/api/users/imageByEmail/${contact.email}'));
         if (response.statusCode == 200) {
           contact.imageUrl = response.body;
         } else {
@@ -83,7 +83,7 @@ class _ConversationlistPageState extends State<ConversationlistPage> {
     for (Contact contact in contacts) {
       try {
         final response = await http.delete(Uri.parse(
-            'http://192.168.1.13:8085/api/users/removeContacts/${widget.id}/${contact.email}'));
+            'http://192.168.74.164:8085/api/users/removeContacts/${widget.id}/${contact.email}'));
         if (response.statusCode == 200) {
           setState(() {
             contacts.removeWhere((contact) => contact.email == email);
@@ -314,7 +314,7 @@ class ChatUserWidget extends StatelessWidget {
   Future<String> _fetchContactId(String email) async {
     try {
       final response = await http.get(
-          Uri.parse('http://192.168.1.13:8085/api/users/idByEmail?email=$email'));
+          Uri.parse('http://192.168.74.164:8085/api/users/idByEmail?email=$email'));
       if (response.statusCode == 200) {
         final dynamic data = json.decode(response.body);
         String contactId = data['id'] as String;

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -7,6 +6,7 @@ import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:camera/camera.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class ScreenChat extends StatefulWidget {
   final String currentUserId;
@@ -34,13 +34,14 @@ class _ScreenChatState extends State<ScreenChat> {
   late SpeechToText _speechToText;
   bool _isListening = false;
   String _text = "";
+  late FlutterTts flutterTts;
 
   @override
   void initState() {
     super.initState();
     _client = StompClient(
       config: StompConfig(
-        url: 'ws://192.168.1.13:8085/socket',
+        url: 'ws://192.168.74.164:8085/socket',
         onConnect: _onConnectCallback,
         onWebSocketError: (dynamic error) => print(error.toString()),
       ),
@@ -52,6 +53,15 @@ class _ScreenChatState extends State<ScreenChat> {
 
     _speechToText = SpeechToText();
     _initSpeech();
+
+    flutterTts = FlutterTts();
+    configureTts();
+  }
+
+  Future<void> configureTts() async {
+    await flutterTts.setLanguage("fr-FR");
+    await flutterTts.setPitch(1.0);
+    await flutterTts.setSpeechRate(0.5);
   }
 
   void _onConnectCallback(StompFrame connectFrame) {
@@ -89,12 +99,19 @@ class _ScreenChatState extends State<ScreenChat> {
         messages.add(messageJson);
       });
       _controller.clear();
+
+      // Convertir le texte en parole
+      _speak(messageContent);
     }
+  }
+
+  Future<void> _speak(String text) async {
+    await flutterTts.speak(text);
   }
 
   void fetchChatHistory() {
     final url =
-        'http://192.168.1.13:8085/messages/${widget.currentUserId}/${widget.contactId}';
+        'http://192.168.74.164:8085/messages/${widget.currentUserId}/${widget.contactId}';
     http.get(Uri.parse(url)).then((response) {
       if (response.statusCode == 200) {
         List<dynamic> jsonResponse = json.decode(response.body);
@@ -113,7 +130,7 @@ class _ScreenChatState extends State<ScreenChat> {
   }
 
   Future<void> _deleteMessage(String messageId, int index) async {
-    final url = 'http://192.168.1.13:8085/messages/$messageId';
+    final url = 'http://192.168.74.164:8085/messages/$messageId';
     final response = await http.delete(Uri.parse(url));
 
     if (response.statusCode == 200 || response.statusCode == 204) {
@@ -155,7 +172,7 @@ class _ScreenChatState extends State<ScreenChat> {
 
   void fetchContactUsername() {
     final url =
-        'http://192.168.1.13:8085/api/users/username/${widget.contactId}';
+        'http://192.168.74.164:8085/api/users/username/${widget.contactId}';
     http.get(Uri.parse(url)).then((response) {
       if (response.statusCode == 200) {
         setState(() {
@@ -220,7 +237,7 @@ class _ScreenChatState extends State<ScreenChat> {
       appBar: AppBar(
         title: Text(contactUsername),
       ),
-      body: Padding(
+      body : Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -238,6 +255,9 @@ class _ScreenChatState extends State<ScreenChat> {
                       isCurrentUser ? Colors.pink[200] : Colors.grey;
 
                   return GestureDetector(
+                    onTap: () {
+                      _speak(item['content'] ?? 'No content');
+                    },
                     onLongPress: () {
                       _confirmDeleteMessage(item['id'], index); // Utiliser 'id' comme identifiant du message
                     },
@@ -346,7 +366,8 @@ class _ScreenChatState extends State<ScreenChat> {
   void dispose() {
     _client.deactivate();
     _controller.dispose();
-    _cameraController.dispose();
+    flutterTts.stop(); // Arrêter toute lecture en cours
     super.dispose();
   }
 }
+

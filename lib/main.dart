@@ -17,7 +17,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 
-final socketUrl = 'http://192.168.1.13:8085/socket';
+final socketUrl = 'http://192.168.74.164:8085/socket';
 
 late List<CameraDescription> cameras;
 

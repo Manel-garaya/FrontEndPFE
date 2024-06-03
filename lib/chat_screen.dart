@@ -32,7 +32,7 @@
 //   Future<void> sendMessage(String text, String recipientId) async {
 //     // String channelId = await checkChannelExistence(userId, recipientId);
 //     final response = await http.post(
-//       Uri.parse('http://192.168.1.13:8080/chats'),
+//       Uri.parse('http://192.168.74.164:8080/chats'),
 //       headers: <String, String>{
 //         'Content-Type': 'application/json',
 //       },
@@ -54,7 +54,7 @@
 
 //  // Méthode pour récupérer les messages de l'utilisateur actuellement connecté
 //   Future<void> fetchMessages() async {
-//     final response = await http.get(Uri.parse('http://192.168.1.13:8080/chats?userId=$userId'));
+//     final response = await http.get(Uri.parse('http://192.168.74.164:8080/chats?userId=$userId'));
 //     if (response.statusCode == 200) {
 //       final List<dynamic> responseData = jsonDecode(response.body);
 //       setState(() {
@@ -67,7 +67,7 @@
 
 //   // Future<void> fetchMessages() async {
 //   //   final response = await http.get(Uri.parse(
-//   //       'http://192.168.1.13:8080/chats/conversation/${widget.senderId}/${widget.recipientId}'));
+//   //       'http://192.168.74.164:8080/chats/conversation/${widget.senderId}/${widget.recipientId}'));
 //   //   if (response.statusCode == 200) {
 //   //     final List<dynamic> responseData = jsonDecode(response.body);
 //   //     setState(() {
