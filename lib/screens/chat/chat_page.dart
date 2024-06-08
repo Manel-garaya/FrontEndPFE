@@ -41,7 +41,7 @@ class _ScreenChatState extends State<ScreenChat> {
     super.initState();
     _client = StompClient(
       config: StompConfig(
-        url: 'ws://192.168.74.164:8085/socket',
+        url: 'ws://172.30.192.1:8085/socket',
         onConnect: _onConnectCallback,
         onWebSocketError: (dynamic error) => print(error.toString()),
       ),
@@ -57,6 +57,7 @@ class _ScreenChatState extends State<ScreenChat> {
     flutterTts = FlutterTts();
     configureTts();
   }
+  
 
   Future<void> configureTts() async {
     await flutterTts.setLanguage("fr-FR");
@@ -111,7 +112,7 @@ class _ScreenChatState extends State<ScreenChat> {
 
   void fetchChatHistory() {
     final url =
-        'http://192.168.74.164:8085/messages/${widget.currentUserId}/${widget.contactId}';
+        'http://172.30.192.1:8085/messages/${widget.currentUserId}/${widget.contactId}';
     http.get(Uri.parse(url)).then((response) {
       if (response.statusCode == 200) {
         List<dynamic> jsonResponse = json.decode(response.body);
@@ -130,7 +131,7 @@ class _ScreenChatState extends State<ScreenChat> {
   }
 
   Future<void> _deleteMessage(String messageId, int index) async {
-    final url = 'http://192.168.74.164:8085/messages/$messageId';
+    final url = 'http://172.30.192.1:8085/messages/$messageId';
     final response = await http.delete(Uri.parse(url));
 
     if (response.statusCode == 200 || response.statusCode == 204) {
@@ -172,7 +173,7 @@ class _ScreenChatState extends State<ScreenChat> {
 
   void fetchContactUsername() {
     final url =
-        'http://192.168.74.164:8085/api/users/username/${widget.contactId}';
+        'http://172.30.192.1:8085/api/users/username/${widget.contactId}';
     http.get(Uri.parse(url)).then((response) {
       if (response.statusCode == 200) {
         setState(() {
@@ -235,7 +236,15 @@ class _ScreenChatState extends State<ScreenChat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(contactUsername),
+        title: Text(contactUsername,
+        style: TextStyle(
+          color: Colors.white,
+        ),),
+        
+        backgroundColor: Color.fromARGB(255, 16, 9, 74),
+        iconTheme: IconThemeData(color: Colors.white), // Change back arrow color to white
+
+
       ),
       body : Padding(
         padding: const EdgeInsets.all(20),
@@ -252,7 +261,7 @@ class _ScreenChatState extends State<ScreenChat> {
                       ? CrossAxisAlignment.end
                       : CrossAxisAlignment.start;
                   Color? backgroundColor =
-                      isCurrentUser ? Colors.pink[200] : Colors.grey;
+                      isCurrentUser ? Color.fromARGB(255, 212, 83, 175) : Colors.grey;
 
                   return GestureDetector(
                     onTap: () {

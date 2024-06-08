@@ -60,9 +60,10 @@ class UpdateProfilPage extends StatelessWidget {
                         ),
                         child: CircleAvatar(
                           radius: 55,
-                          backgroundImage: controller.imageUrl.value != null
-                              ? NetworkImage(controller.imageUrl.value!)
-                              : AssetImage('avatarr.png') as ImageProvider,
+                          // backgroundImage: controller.imageUrl.value != null
+                          //     ? NetworkImage(controller.imageUrl.value!)
+                          //     : AssetImage('avatarr.png') as ImageProvider,
+                          backgroundImage: AssetImage("assets/images/avatarr.jpg"),
                         ),
                       );
                     }),
@@ -89,7 +90,8 @@ class UpdateProfilPage extends StatelessWidget {
                           padding: EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.purple,
+                            color: Color(0xFF060B8A),
+
                           ),
                           child: Icon(
                             Icons.camera_alt,
@@ -192,10 +194,10 @@ class UpdateProfilPage extends StatelessWidget {
   }
 
   Future<void> _uploadImage(BuildContext context, PickedFile pickedFile) async {
-    String currentUserId = AppStorge.readId().toString();
+    String currentUserId = AppStorage.readId().toString();
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://192.168.74.164:8085/cloudinary/upload/$currentUserId'),
+      Uri.parse('http://172.30.192.1:8085/cloudinary/upload/$currentUserId'),
     );
 
     List<int> bytes = await pickedFile.readAsBytes();

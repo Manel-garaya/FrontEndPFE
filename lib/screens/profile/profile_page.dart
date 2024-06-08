@@ -6,6 +6,7 @@ import 'package:messagerie/controllers/profile_controller/profile_controller.dar
 import 'package:messagerie/core/storage/app_storage.dart';
 import 'package:messagerie/screens/profile/signin_page.dart';
 import 'package:messagerie/screens/profile/update_profil_page.dart';
+import 'package:path/path.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   final ProfileController controller = Get.put(ProfileController());
@@ -42,7 +43,7 @@ class ProfilePage extends GetView<ProfileController> {
                             iconStyle: IconStyle(
                               iconsColor: Colors.white,
                               withBackground: true,
-                              backgroundColor: Colors.purple,
+                              backgroundColor: Colors.black,
                             ),
                             title: 'Dark mode',
                             subtitle: controller.darkModeEnabled
@@ -76,7 +77,9 @@ class ProfilePage extends GetView<ProfileController> {
                             subtitle: "English",
                           ),
                           SettingsItem(
-                            onTap: () {},
+                            onTap: () {
+                              controller.deleteAccount();
+                            },
                             icons: CupertinoIcons.delete_solid,
                             title: "Delete account",
                             titleStyle: TextStyle(
@@ -98,7 +101,7 @@ class ProfilePage extends GetView<ProfileController> {
                 onPressed: () => Get.to(LoginPage()),
                 icon: Icon(
                   Icons.exit_to_app_outlined,
-                  color: Colors.purple,
+                  color: Color.fromARGB(255, 16, 9, 74),
                 ),
               ),
             ),
@@ -112,13 +115,14 @@ class ProfilePage extends GetView<ProfileController> {
     return Container(
       padding: const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 215, 176, 222), // Couleur lilas clair
+        color: Color.fromARGB(255, 16, 9, 74).withOpacity(0.8), // Couleur lilas clair
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Row(
         children: [
           CircleAvatar(
             radius: 50.0,
+            //backgroundImage: AssetImage("assets/images/avatarr.jpg"),
             backgroundImage: controller.imageUrl.value != null
                 ? NetworkImage(controller.imageUrl.value!)
                 : AssetImage('assets/default_avatar.png')
@@ -129,17 +133,18 @@ class ProfilePage extends GetView<ProfileController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${AppStorge.readUsername()}', // Afficher dynamiquement le nom d'utilisateur
+                '${AppStorage.readUsername()}', // Afficher dynamiquement le nom d'utilisateur
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
               Text(
-                '${AppStorge.readEmail()}', // Afficher dynamiquement l'e-mail
+                '${AppStorage.readEmail()}', // Afficher dynamiquement l'e-mail
                 style: TextStyle(
                   fontSize: 16.0,
-                  color: Colors.grey[600],
+                  color: Colors.white,
                 ),
               ),
             ],

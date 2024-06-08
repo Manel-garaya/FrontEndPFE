@@ -27,7 +27,7 @@ class NewMessagePage extends GetView<ProfileController> {
     };
 
     final Uri uri =
-        Uri.parse('http://192.168.74.164:8085/api/users/addContacts/$currentUserId');
+        Uri.parse('http://172.30.192.1:8085/api/users/addContacts/$currentUserId');
 
     try {
       final http.Response response = await http.post(
@@ -64,7 +64,10 @@ class NewMessagePage extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Contact'),
+        title: Text('Add Contact',
+        style: TextStyle(color : Colors.white),),
+        backgroundColor: Color.fromARGB(255, 16, 9, 74),
+        iconTheme: IconThemeData(color: Colors.white), 
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -76,6 +79,7 @@ class NewMessagePage extends GetView<ProfileController> {
               decoration: InputDecoration(
                 labelText: 'Contact Name',
                 border: OutlineInputBorder(),
+                
               ),
             ),
             SizedBox(height: 16.0),
@@ -93,7 +97,7 @@ class NewMessagePage extends GetView<ProfileController> {
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
-                backgroundColor: Colors.purple,
+                backgroundColor: Color.fromARGB(255, 16, 9, 74),
                 padding: EdgeInsets.symmetric(vertical: 16.0),
               ),
               child: Text(

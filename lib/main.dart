@@ -17,7 +17,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 
-final socketUrl = 'http://192.168.74.164:8085/socket';
+final socketUrl = 'http://172.30.192.1:8085/socket';
 
 late List<CameraDescription> cameras;
 
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialBinding: AllBindings(),
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Kifna Messagerie',
       theme: ThemeData.light(),
       initialRoute: '/',
       routes: {

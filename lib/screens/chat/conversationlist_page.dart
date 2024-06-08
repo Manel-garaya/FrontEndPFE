@@ -45,13 +45,13 @@ class _ConversationlistPageState extends State<ConversationlistPage> {
   Future<void> _fetchContacts() async {
     try {
       final response = await http.get(
-          Uri.parse('http://192.168.74.164:8085/api/users/contacts/${widget.id}'));
+          Uri.parse('http://172.30.192.1:8085/api/users/contacts/${widget.id}'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         setState(() {
           contacts = data.map((contact) => Contact.fromJson(contact)).toList();
         });
-        fetchContactsImages(); // Call function to fetch images
+         fetchContactsImages(); // Call function to fetch images
         _contactsStreamController.add(contacts);
       } else {
         print('Failed to fetch contacts');
@@ -65,7 +65,7 @@ class _ConversationlistPageState extends State<ConversationlistPage> {
     for (Contact contact in contacts) {
       try {
         final response = await http.get(Uri.parse(
-            'http://192.168.74.164:8085/api/users/imageByEmail/${contact.email}'));
+            'http://172.30.192.1:8085/api/users/imageByEmail/${contact.email}'));
         if (response.statusCode == 200) {
           contact.imageUrl = response.body;
         } else {
@@ -83,7 +83,7 @@ class _ConversationlistPageState extends State<ConversationlistPage> {
     for (Contact contact in contacts) {
       try {
         final response = await http.delete(Uri.parse(
-            'http://192.168.74.164:8085/api/users/removeContacts/${widget.id}/${contact.email}'));
+            'http://172.30.192.1:8085/api/users/removeContacts/${widget.id}/${contact.email}'));
         if (response.statusCode == 200) {
           setState(() {
             contacts.removeWhere((contact) => contact.email == email);
@@ -103,7 +103,12 @@ class _ConversationlistPageState extends State<ConversationlistPage> {
     print(widget.id); // Print widget ID (currentUserId)
     return Scaffold(
       appBar: AppBar(
-        title: Text("Conversation List"),
+        title: Text("Conversation List",
+        style: TextStyle(color : Colors.white),
+        ),
+        backgroundColor: Color.fromARGB(255, 16, 9, 74),
+        iconTheme: IconThemeData(color: Colors.white), // Change back arrow color to white
+
       ),
       drawer: ProfilePage(),
       body: Column(
@@ -116,7 +121,9 @@ class _ConversationlistPageState extends State<ConversationlistPage> {
               children: <Widget>[
                 Text(
                   "Conversations",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.black,
+                    fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -126,7 +133,7 @@ class _ConversationlistPageState extends State<ConversationlistPage> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.purple,
+                      color: Color.fromARGB(255, 212, 83, 175),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
@@ -183,8 +190,8 @@ class _ConversationlistPageState extends State<ConversationlistPage> {
                         name: snapshot.data![index].name,
                         email: snapshot.data![index].email,
                         image: snapshot.data![index]
-                            .imageUrl, // Use image URL from contact
-                        time: "Now", // You can change this to match your design
+                             .imageUrl, // Use image URL from contact
+                        time: "", // You can change this to match your design
                         currentUserId: widget.id, // Pass currentUserId
                         onTap: () {}, // Add an empty callback for now
                         onDelete: () => _deleteContact(
@@ -201,7 +208,7 @@ class _ConversationlistPageState extends State<ConversationlistPage> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.purple,
+        selectedItemColor: Color.fromARGB(255, 16, 9, 74),
         unselectedItemColor: Colors.grey.shade600,
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -245,7 +252,7 @@ class Contact {
   final String email;
   String? imageUrl;
 
-  Contact({required this.name, required this.email, this.imageUrl});
+  Contact({required this.name, required this.email,});
 
   factory Contact.fromJson(Map<String, dynamic> json) {
     return Contact(
@@ -262,7 +269,7 @@ class ChatUserWidget extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onDelete; // Add delete callback
   final String currentUserId; // Add currentUserId parameter
-  final String? image;
+ final String? image;
 
   const ChatUserWidget({
     required this.name,
@@ -291,6 +298,7 @@ class ChatUserWidget extends StatelessWidget {
       },
       child: ListTile(
         leading: CircleAvatar(
+         // backgroundImage: AssetImage("assets/images/avatarr.jpg"),
           backgroundImage: image != null
               ? NetworkImage(image!)
               : AssetImage('assets/default_avatar.png') as ImageProvider,
@@ -302,7 +310,7 @@ class ChatUserWidget extends StatelessWidget {
             Text(time),
             IconButton(
               icon: Icon(Icons.delete_outline_rounded, 
-              color: Color.fromARGB(255, 245, 37, 22)),
+              color: Colors.pink),
               onPressed: onDelete, // Handle delete
             ),
           ],
@@ -314,7 +322,7 @@ class ChatUserWidget extends StatelessWidget {
   Future<String> _fetchContactId(String email) async {
     try {
       final response = await http.get(
-          Uri.parse('http://192.168.74.164:8085/api/users/idByEmail?email=$email'));
+          Uri.parse('http://172.30.192.1:8085/api/users/idByEmail?email=$email'));
       if (response.statusCode == 200) {
         final dynamic data = json.decode(response.body);
         String contactId = data['id'] as String;

@@ -1,9 +1,7 @@
-import 'dart:convert';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:messagerie/chat_screen.dart';
 import 'package:messagerie/core/helperes/app_validators.dart';
 import 'package:messagerie/core/networking/api_constants.dart';
 import 'package:messagerie/core/networking/dio_singleton.dart';
@@ -11,18 +9,18 @@ import 'package:messagerie/core/storage/app_storage.dart';
 import 'package:messagerie/models/data_user_model.dart';
 import 'package:messagerie/models/get_user_model.dart';
 import 'package:messagerie/models/user_model.dart';
-import 'package:messagerie/screens/chat/chat_page.dart';
 import 'package:messagerie/screens/chat/conversationlist_page.dart';
 import 'package:messagerie/screens/profile/code_page.dart';
-import 'package:messagerie/screens/profile/signin_page.dart';
-import 'package:messagerie/screens/profile/update_profil_page.dart';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:messagerie/screens/profile/signin_page.dart';
 
 class ProfileController extends GetxController {
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController emailcontactController =TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController birthdayController = TextEditingController();
   TextEditingController confirmpasswordController = TextEditingController();
@@ -142,6 +140,19 @@ class ProfileController extends GetxController {
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: Colors.blue, // Couleur principale du calendrier
+            hintColor: Colors.blueAccent, // Couleur d'accentuation du calendrier
+            colorScheme: ColorScheme.light(primary: Colors.blue), // Couleur de la barre supérieure du calendrier
+            buttonTheme: ButtonThemeData(
+              textTheme: ButtonTextTheme.primary, // Couleur du texte des boutons
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null) {
       birthdayController.text = picked.toLocal().toString().split(' ')[0];
@@ -160,17 +171,17 @@ class ProfileController extends GetxController {
           await dioSingleton.dio.post(ApiConstants.singinUrl, data: data);
       userModel = UserLoginModel.fromJson(response.data);
       if (userModel != null) {
-        AppStorge.saveId("${userModel!.userDetails!.id}");
+        AppStorage.saveId("${userModel!.userDetails!.id}");
         setCurrentUserId(userModel!.userDetails!.id.toString());
         print(currentUserId.value);
-        AppStorge.saveUsername("${userModel!.userDetails!.username}");
-        AppStorge.saveEmail("${userModel!.userDetails!.email}");
-        print(AppStorge.readId());
+        AppStorage.saveUsername("${userModel!.userDetails!.username}");
+        AppStorage.saveEmail("${userModel!.userDetails!.email}");
+        print(AppStorage.readId());
         print("username=================>${userModel!.userDetails!.id}");
         userNameController.text = userModel!.userDetails!.username!;
         emailController.text = userModel!.userDetails!.email!;
         birthdayController.text = userModel!.userDetails!.birthday!;
-        getUser(AppStorge.readId().toString());
+        getUser(AppStorage.readId().toString());
         Get.to(ConversationlistPage(id: currentUserId.value));
       } else {
         // Afficher un message d'erreur ou gérer l'échec de la connexion
@@ -281,8 +292,7 @@ class ProfileController extends GetxController {
           .post(ApiConstants.forgotPasswordUrl, data: data)
           .then((value) {
         print('Password reset instructions sent to your email.');
-        Get.to(
-            const EnterCodePage()); // Naviguer vers la page de saisie du code
+        Get.to(EnterCodePage()); // Naviguer vers la page de saisie du code
       }).onError((error, stackTrace) {
         print("error=====> $error");
       });
@@ -388,8 +398,8 @@ class ProfileController extends GetxController {
   void signOut() {}
 
   Future<void> getUserImage() async {
-    String currentUserId = AppStorge.readId().toString();
-    String apiUrl = 'http://192.168.1.13:8085/api/users/image/$currentUserId';
+    String currentUserId = AppStorage.readId().toString();
+    String apiUrl = 'http://172.30.192.1:8085/api/users/image/$currentUserId';
 
     try {
       var response = await http.get(Uri.parse(apiUrl));
@@ -405,11 +415,11 @@ class ProfileController extends GetxController {
   }
 
   Future<void> uploadImage(BuildContext context, PickedFile pickedFile) async {
-    String currentUserId = AppStorge.readId().toString();
+    String currentUserId = AppStorage.readId().toString();
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://192.168.1.13:8085/cloudinary/upload/$currentUserId'),
+      Uri.parse('http://172.30.192.1:8085/cloudinary/upload/$currentUserId'),
     );
 
     // Read the file as bytes
@@ -446,6 +456,27 @@ class ProfileController extends GetxController {
       }
     } catch (e) {
       print(e.toString());
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    String userId = currentUserId.value;
+    String deleteUrl = "${ApiConstants.deleteUrl}/$userId";
+
+    try {
+      final response = await http.delete(Uri.parse(deleteUrl));
+      if (response.statusCode == 204) {
+        // Account successfully deleted
+        AppStorage.clear(); // Clear stored user data
+        Get.offAll(LoginPage()); // Navigate to sign-in page
+        Get.snackbar("Success", "Account deleted successfully");
+      } else {
+        // Handle error
+        Get.snackbar("Error", "Failed to delete account");
+      }
+    } catch (e) {
+      print("Error deleting account: $e");
+      Get.snackbar("Error", "An error occurred while deleting the account");
     }
   }
 }
