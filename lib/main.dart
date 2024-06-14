@@ -1,25 +1,16 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:messagerie/chat_screen.dart';
 import 'package:messagerie/core/bindings/bindings.dart';
 import 'package:messagerie/screens/Splash_Animated.dart';
-import 'package:messagerie/screens/chat/chat_page.dart';
-
-import 'package:flutter/material.dart'; // Import the library that defines 'bodyText1'
-
-import 'package:messagerie/screens/profile/code_page.dart';
-import 'package:messagerie/screens/profile/new_password.dart';
-import 'package:messagerie/screens/profile/signin_page.dart';
-import 'package:messagerie/socket_connection.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-
+import 'package:camera/camera.dart';
+import 'package:camera_web/camera_web.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 
-final socketUrl = 'http://172.30.192.1:8085/socket';
+final socketUrl = 'http://192.168.1.33:8085/socket';
 
 late List<CameraDescription> cameras;
+
 
 Future<void> main() async {
     WidgetsFlutterBinding.ensureInitialized();

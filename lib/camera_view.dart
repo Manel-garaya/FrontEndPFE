@@ -1,12 +1,11 @@
 import 'dart:convert';
-
 import 'package:camera/camera.dart';
 import 'package:messagerie/main.dart';
 import 'package:flutter/material.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:tflite_v2/tflite_v2.dart';
 import 'dart:async';
-
+import 'package:camera_web/camera_web.dart';
 /// CameraApp is the Main Application.
 class CameraApp extends StatefulWidget {
   /// Default Constructor
@@ -76,7 +75,7 @@ class _CameraAppState extends State<CameraApp> {
     super.initState();
     _client = StompClient(
       config: StompConfig(
-        url: 'ws://172.30.192.1:8085/socket',
+        url: 'ws://192.168.1.33:8085/socket',
         onConnect: _onConnectCallback,
         onWebSocketError: (dynamic error) => print(error.toString()),
       ),
@@ -96,7 +95,7 @@ class _CameraAppState extends State<CameraApp> {
 
       // Start processing the output every 3 seconds
       timer =
-          Timer.periodic(const Duration(seconds: 1), (Timer t) => runModel());
+          Timer.periodic(const Duration(seconds: 2), (Timer t) => runModel());
     }).catchError((Object e) {
       if (e is CameraException) {
         switch (e.code) {

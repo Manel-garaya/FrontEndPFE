@@ -1,7 +1,7 @@
 import 'package:messagerie/core/storage/app_storage.dart';
 
 class ApiConstants {
-  static const String baseUrl = "http://172.30.192.1:8085/";
+  static const String baseUrl = "http://192.168.1.33:8085/";
   static const String signupUrl = "${baseUrl}api/users/register";
   static const String singinUrl = "${baseUrl}api/users/login";
   static const String forgotPasswordUrl = "${baseUrl}api/users/forgot-password";
@@ -17,7 +17,7 @@ class ApiConstants {
   static final String getAllMsg="${baseUrl}chats/conversation/${AppStorage.readId()}/660407b84857cc4d9bbf6265";
   static String photoUrl ="${baseUrl}api/users/${AppStorage.readId()}/photo}";
   static  String createChannelUrl = '$baseUrl/chanels/create';
-  static  String predictionUrl = 'http://172.30.192.1:5000/predict';
+  static  String predictionUrl = 'http://192.168.1.33:5000/predict';
   static final String deleteUrl ="${baseUrl}api/users/${AppStorage.readId()}";
 
 
