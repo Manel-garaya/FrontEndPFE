@@ -7,21 +7,19 @@ import 'package:camera/camera.dart';
 import 'package:camera_web/camera_web.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 
-final socketUrl = 'http://192.168.1.33:8085/socket';
+final socketUrl = 'http://localhost:8085/socket';
 
 late List<CameraDescription> cameras;
 
 
 Future<void> main() async {
-    WidgetsFlutterBinding.ensureInitialized();
-   cameras = await availableCameras();
-  await GetStorage.init();
-  //socket.onConnect((_)
-  {
-    print('connect');
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    cameras = await availableCameras();
+  } catch (e) {
+    print('Error fetching cameras: $e');
   }
-  ;
-
+  await GetStorage.init();
   runApp(const MyApp());
 }
 

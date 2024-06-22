@@ -399,7 +399,7 @@ class ProfileController extends GetxController {
 
   Future<void> getUserImage() async {
     String currentUserId = AppStorage.readId().toString();
-    String apiUrl = 'http://192.168.1.33:8085/api/users/image/$currentUserId';
+    String apiUrl = 'http://localhost:8085/api/users/image/$currentUserId';
 
     try {
       var response = await http.get(Uri.parse(apiUrl));
@@ -419,7 +419,7 @@ class ProfileController extends GetxController {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://192.168.1.33:8085/cloudinary/upload/$currentUserId'),
+      Uri.parse('http://localhost:8085/cloudinary/upload/$currentUserId'),
     );
 
     // Read the file as bytes

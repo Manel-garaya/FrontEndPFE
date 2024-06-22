@@ -75,7 +75,7 @@ class _CameraAppState extends State<CameraApp> {
     super.initState();
     _client = StompClient(
       config: StompConfig(
-        url: 'ws://192.168.1.33:8085/socket',
+        url: 'ws://localhost:8085/socket',
         onConnect: _onConnectCallback,
         onWebSocketError: (dynamic error) => print(error.toString()),
       ),
