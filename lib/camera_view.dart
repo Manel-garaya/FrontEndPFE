@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:tflite_v2/tflite_v2.dart';
 import 'dart:async';
-import 'package:camera_web/camera_web.dart';
 /// CameraApp is the Main Application.
 class CameraApp extends StatefulWidget {
   /// Default Constructor
