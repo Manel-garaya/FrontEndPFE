@@ -13,9 +13,10 @@ class NewMessagePage extends GetView<ProfileController> {
   NewMessagePage({Key? key, required this.currentUserId}) : super(key: key);
 
   final ChatController chatController = Get.put(ChatController());
+  TextEditingController emailcontactController = TextEditingController();
 
-  Future<void> addContact() async {
-    final String recipientEmail = controller.emailcontactController.text.trim();
+  Future<void> addContact(String recipientEmail) async {
+    // final String recipientEmail = emailcontactController.text.trim();
     final String recipientName = controller.nameController.text;
     final int randomId = DateTime.now().millisecondsSinceEpoch;
 
@@ -85,7 +86,7 @@ class NewMessagePage extends GetView<ProfileController> {
             ),
             SizedBox(height: 16.0),
             TextField(
-              controller: controller.emailcontactController,
+              controller: emailcontactController,
               decoration: InputDecoration(
                 labelText: 'Contact Email',
                 border: OutlineInputBorder(),
@@ -94,7 +95,7 @@ class NewMessagePage extends GetView<ProfileController> {
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () async {
-                await addContact();
+                await addContact(emailcontactController.text);
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
