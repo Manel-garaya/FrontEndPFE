@@ -15,7 +15,7 @@ class NewMessagePage extends GetView<ProfileController> {
   final ChatController chatController = Get.put(ChatController());
 
   Future<void> addContact() async {
-    final String recipientEmail = controller.emailController.text;
+    final String recipientEmail = controller.emailcontactController.text.trim();
     final String recipientName = controller.nameController.text;
     final int randomId = DateTime.now().millisecondsSinceEpoch;
 
@@ -26,8 +26,8 @@ class NewMessagePage extends GetView<ProfileController> {
       'currentUserId': currentUserId,
     };
 
-    final Uri uri =
-        Uri.parse('http://192.168.1.45:8085/api/users/addContacts/$currentUserId');
+    final Uri uri = Uri.parse(
+        'http://192.168.1.45:8085/api/users/addContacts/$currentUserId');
 
     try {
       final http.Response response = await http.post(
@@ -64,10 +64,12 @@ class NewMessagePage extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Contact',
-        style: TextStyle(color : Colors.white),),
+        title: Text(
+          'Add Contact',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Color.fromARGB(255, 16, 9, 74),
-        iconTheme: IconThemeData(color: Colors.white), 
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -79,12 +81,11 @@ class NewMessagePage extends GetView<ProfileController> {
               decoration: InputDecoration(
                 labelText: 'Contact Name',
                 border: OutlineInputBorder(),
-                
               ),
             ),
             SizedBox(height: 16.0),
             TextField(
-              controller: controller.emailController,
+              controller: controller.emailcontactController,
               decoration: InputDecoration(
                 labelText: 'Contact Email',
                 border: OutlineInputBorder(),
