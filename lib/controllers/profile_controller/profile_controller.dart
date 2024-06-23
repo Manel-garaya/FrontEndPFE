@@ -41,6 +41,8 @@ class ProfileController extends GetxController {
 
   RxString currentUserId = "".obs;
 
+  get contactController => null;
+
   @override
   void onInit() {
     super.onInit();
@@ -143,9 +145,9 @@ class ProfileController extends GetxController {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            primaryColor: Colors.blue, // Couleur principale du calendrier
+            primaryColor: Color.fromARGB(255, 222, 53, 205), // Couleur principale du calendrier
             hintColor: Colors.blueAccent, // Couleur d'accentuation du calendrier
-            colorScheme: ColorScheme.light(primary: Colors.blue), // Couleur de la barre supérieure du calendrier
+            colorScheme: ColorScheme.light(primary: Color.fromARGB(255, 2, 27, 78)), // Couleur de la barre supérieure du calendrier
             buttonTheme: ButtonThemeData(
               textTheme: ButtonTextTheme.primary, // Couleur du texte des boutons
             ),
@@ -184,7 +186,6 @@ class ProfileController extends GetxController {
         getUser(AppStorage.readId().toString());
         Get.to(ConversationlistPage(id: currentUserId.value));
       } else {
-        // Afficher un message d'erreur ou gérer l'échec de la connexion
       }
     } catch (error) {
       print("error=====> $error");
@@ -399,7 +400,7 @@ class ProfileController extends GetxController {
 
   Future<void> getUserImage() async {
     String currentUserId = AppStorage.readId().toString();
-    String apiUrl = 'http://localhost:8085/api/users/image/$currentUserId';
+    String apiUrl = 'http://192.168.1.45:8085/api/users/image/$currentUserId';
 
     try {
       var response = await http.get(Uri.parse(apiUrl));
@@ -419,7 +420,7 @@ class ProfileController extends GetxController {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://localhost:8085/cloudinary/upload/$currentUserId'),
+      Uri.parse('http://192.168.1.45:8085/cloudinary/upload/$currentUserId'),
     );
 
     // Read the file as bytes

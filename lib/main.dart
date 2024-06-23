@@ -7,7 +7,7 @@ import 'package:camera/camera.dart';
 import 'package:camera_web/camera_web.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 
-final socketUrl = 'http://localhost:8085/socket';
+final socketUrl = 'http://192.168.1.45:8085/socket';
 
 late List<CameraDescription> cameras;
 

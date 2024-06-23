@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:messagerie/camera_view.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:camera/camera.dart';
-import 'package:camera_web/camera_web.dart';
+
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -42,7 +42,7 @@ class _ScreenChatState extends State<ScreenChat> {
     super.initState();
     _client = StompClient(
       config: StompConfig(
-        url: 'ws://localhost:8085/socket',
+        url: 'ws://192.168.1.45:8085/socket',
         onConnect: _onConnectCallback,
         onWebSocketError: (dynamic error) => print(error.toString()),
       ),
@@ -113,7 +113,7 @@ class _ScreenChatState extends State<ScreenChat> {
 
   void fetchChatHistory() {
     final url =
-        'http://localhost:8085/messages/${widget.currentUserId}/${widget.contactId}';
+        'http://192.168.1.45:8085/messages/${widget.currentUserId}/${widget.contactId}';
     http.get(Uri.parse(url)).then((response) {
       if (response.statusCode == 200) {
         List<dynamic> jsonResponse = json.decode(response.body);
@@ -132,7 +132,7 @@ class _ScreenChatState extends State<ScreenChat> {
   }
 
   Future<void> _deleteMessage(String messageId, int index) async {
-    final url = 'http://localhost:8085/messages/$messageId';
+    final url = 'http://192.168.1.45:8085/messages/$messageId';
     final response = await http.delete(Uri.parse(url));
 
     if (response.statusCode == 200 || response.statusCode == 204) {
@@ -174,7 +174,7 @@ class _ScreenChatState extends State<ScreenChat> {
 
   void fetchContactUsername() {
     final url =
-        'http://localhost:8085/api/users/username/${widget.contactId}';
+        'http://192.168.1.45:8085/api/users/username/${widget.contactId}';
     http.get(Uri.parse(url)).then((response) {
       if (response.statusCode == 200) {
         setState(() {

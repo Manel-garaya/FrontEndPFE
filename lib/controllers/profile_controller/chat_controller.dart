@@ -44,7 +44,7 @@ class ChatController extends GetxController {
   Future<void> sendMessage(String text, String recipientId) async {
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:8085/chats'),
+        Uri.parse('http://192.168.1.45:8085/chats'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },

@@ -128,12 +128,11 @@ class LoginPage extends GetView<ProfileController> {
             onTap: () {
               print("ontap");
               if (controller.keyForm.currentState!.validate()) {
-                controller.signIn();
-              } Get.to(ScreenChat(
-                contactId: "6675030dccc5259c51c4890b",
-                currentUserId: "6675030dccc5259c51c4890b",
-              ));
-              // Get.to(ConversationlistPage(id: 'e'));
+                controller.signIn();}
+              // } Get.to(ScreenChat(
+              //   contactId: "6675030dccc5259c51c4890b",
+              //   currentUserId: "6675030dccc5259c51c4890b",
+              // ));
             },
             text: "Login",
             backgroundColor: Colors.blue,
